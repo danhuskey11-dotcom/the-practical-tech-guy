@@ -4,7 +4,7 @@ const today = new Date();
 
 <footer>
 	<div class="footer-content">
-		<p class="brand">The Practical Tech Guy</p>
+		<a class="footer-logo" href="/" aria-label="The Practical Tech Guy home"><img src="/branding/logo-horizontal-dark.png" alt="The Practical Tech Guy"/></a>
 
 		<nav class="footer-links" aria-label="Footer navigation">
 	          <a href="/about">About</a>
@@ -37,12 +37,18 @@ const today = new Date();
 		gap: 1rem;
 	}
 
-	.brand {
-		margin: 0;
-		color: var(--white);
-		font-size: 1.1rem;
-		font-weight: 700;
-	}
+.footer-logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+}
+
+.footer-logo img {
+	display: block;
+	width: auto;
+	height: 100px;
+}
 
 	.footer-links {
 		display: flex;
@@ -76,6 +82,10 @@ const today = new Date();
 	@media (max-width: 720px) {
 		footer {
 			padding: 2.5rem 1rem;
+		}
+
+		.footer-logo img {
+			height: 80px;
 		}
 
 		.footer-links {

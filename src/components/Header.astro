@@ -1,12 +1,11 @@
 ---
-import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
 <header>
 	<nav>
 		<h2>
-			<a href="/">{SITE_TITLE}</a>
+			<a class="site-logo" href="/" aria-label="The Practical Tech Guy home"><img src="/branding/logo-horizontal-light.png" alt="The Practical Tech Guy"/></a>
 		</h2>
 
 		<div class="internal-links">
@@ -36,19 +35,27 @@ import HeaderLink from './HeaderLink.astro';
 		min-height: 72px;
 	}
 
-	h2 {
-		margin: 0;
-		font-size: 1.15rem;
-		font-weight: 700;
-	}
+.site-logo {
+	display: flex;
+	align-items: center;
+	padding: 0;
+	text-decoration: none;
+	border: 0;
+}
 
-	h2 a,
-	h2 a.active {
-		padding: 0;
-		color: var(--navy);
-		text-decoration: none;
-		border-bottom: none;
-	}
+.site-logo:hover,
+.site-logo:focus,
+.site-logo:active,
+.site-logo.active {
+	border: 0;
+	text-decoration: none;
+}
+
+.site-logo img {
+	display: block;
+	width: auto;
+	height: 100px;
+}
 
 	.internal-links {
 		display: flex;
@@ -56,27 +63,27 @@ import HeaderLink from './HeaderLink.astro';
 		gap: 0.5rem;
 	}
 
-	nav a {
-		padding: 1.35rem 0.75rem;
-		color: var(--slate);
-		border-bottom: 3px solid transparent;
-		text-decoration: none;
-		font-size: 0.95rem;
-		font-weight: 600;
-		transition:
-			color 0.2s ease,
-			border-color 0.2s ease;
-	}
+.internal-links a {
+	padding: 1.35rem 0.75rem;
+	color: var(--slate);
+	border-bottom: 3px solid transparent;
+	text-decoration: none;
+	font-size: 0.95rem;
+	font-weight: 600;
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease;
+}
 
-	nav a:hover {
-		color: var(--blue);
-	}
+.internal-links a:hover {
+	color: var(--blue);
+}
 
-	nav a.active {
-		color: var(--blue);
-		text-decoration: none;
-		border-bottom-color: var(--blue);
-	}
+.internal-links a.active {
+	color: var(--blue);
+	text-decoration: none;
+	border-bottom-color: var(--blue);
+}
 
 	@media (max-width: 720px) {
 		header {
@@ -89,8 +96,8 @@ import HeaderLink from './HeaderLink.astro';
 			padding-top: 1rem;
 		}
 
-		h2 {
-			padding-bottom: 0.5rem;
+		.site-logo img {
+			height: 80px;
 		}
 
 		.internal-links {

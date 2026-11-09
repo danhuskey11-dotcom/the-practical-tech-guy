@@ -69,6 +69,52 @@ const posts = (await getCollection('blog'))
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
 			}
+			.page-header {
+	margin-bottom: 3rem;
+}
+
+.categories {
+	margin-bottom: 4rem;
+}
+
+.categories h2 {
+	margin-bottom: 1.5rem;
+	font-size: 1.5rem;
+}
+
+.category-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.75rem;
+}
+
+.category-grid a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 80px;
+	padding: 1rem;
+	background: var(--white);
+	color: var(--navy);
+	border: 1px solid var(--light-gray);
+	border-radius: 10px;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none;
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease,
+		box-shadow 0.2s ease,
+		transform 0.2s ease;
+}
+
+.category-grid a:hover {
+	color: var(--blue);
+	border-color: var(--blue);
+	box-shadow: 0 4px 16px rgba(15, 39, 68, 0.08);
+	transform: translateY(-2px);
+}
+
 			@media (max-width: 720px) {
 				ul {
 					gap: 0.5em;
@@ -83,6 +129,9 @@ const posts = (await getCollection('blog'))
 				ul li:first-child .title {
 					font-size: 1.563em;
 				}
+				.category-grid {
+	grid-template-columns: repeat(2, 1fr);
+}
 			}
 		</style>
 	</head>
@@ -98,7 +147,22 @@ const posts = (await getCollection('blog'))
 		software, security, and AI.
 	</p>
 </header>
+
+<section class="categories">
+	<h2>Browse by Topic</h2>
+
+	<div class="category-grid">
+		<a href="/guides/category/windows/">Windows</a>
+		<a href="/guides/category/microsoft-365/">Microsoft 365</a>
+		<a href="/guides/category/hardware/">Hardware</a>
+		<a href="/guides/category/networking/">Networking</a>
+		<a href="/guides/category/software/">Software</a>
+		<a href="/guides/category/security/">Security</a>
+		<a href="/guides/category/ai/">AI</a>
+	</div>
+</section>
 			<section>
+			<h2>Latest Guides</h2>
 				<ul>
 					{posts.map((post) => (
 						<li>

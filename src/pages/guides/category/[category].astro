@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import Header from '../../../components/Header.astro';
+import { SITE_TITLE } from '../../../consts';
+
+export function getStaticPaths() {
+	const categories = [
+		{ slug: 'windows', name: 'Windows' },
+		{ slug: 'microsoft-365', name: 'Microsoft 365' },
+		{ slug: 'hardware', name: 'Hardware' },
+		{ slug: 'networking', name: 'Networking' },
+		{ slug: 'software', name: 'Software' },
+		{ slug: 'security', name: 'Security' },
+		{ slug: 'ai', name: 'AI' },
+	];
+
+	return categories.map((category) => ({
+		params: {
+			category: category.slug,
+		},
+		props: {
+			category: category.slug,
+			categoryName: category.name,
+		},
+	}));
+}
+
+const { category, categoryName } = Astro.props;
+
+const posts = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.category === category,
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`${categoryName} Guides | ${SITE_TITLE}`}
+			description={`Practical ${categoryName} guides, troubleshooting, and technology advice from The Practical Tech Guy.`}
+		/>
+	</head>
+
+	<body>
+		<Header />
+
+		<main>
+			<header class="page-header">
+				<p class="eyebrow">TECH GUIDES</p>
+				<h1>{categoryName}</h1>
+				<p>
+					Practical guides, troubleshooting, and straightforward
+					technology advice for {categoryName}.
+				</p>
+			</header>
+
+			<section>
+				{posts.length > 0 ? (
+					<ul class="guide-list">
+						{posts.map((post) => (
+							<li>
+								<a href={`/guides/${post.id}/`}>
+									<h2>{post.data.title}</h2>
+
+									<p>{post.data.description}</p>
+
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<div class="empty-state">
+						<h2>Guides coming soon</h2>
+						<p>
+							There aren't any published {categoryName} guides yet.
+						</p>
+					</div>
+				)}
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-header {
+		margin-bottom: 3rem;
+	}
+
+	.guide-list {
+		display: grid;
+		gap: 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.guide-list li {
+		margin: 0;
+	}
+
+	.guide-list a {
+		display: block;
+		padding: 1.5rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+		text-decoration: none;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.guide-list a:hover {
+		border-color: var(--blue);
+		box-shadow: 0 4px 16px rgba(15, 39, 68, 0.08);
+		transform: translateY(-2px);
+	}
+
+	.guide-list h2 {
+		margin-bottom: 0.5rem;
+		font-size: 1.35rem;
+	}
+
+	.guide-list p {
+		margin-bottom: 0.75rem;
+		color: var(--slate);
+	}
+
+	.guide-list .date {
+		margin: 0;
+		color: rgb(var(--gray));
+		font-size: 0.85rem;
+	}
+
+	.empty-state {
+		padding: 2rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+	}
+
+	.empty-state h2 {
+		font-size: 1.35rem;
+	}
+
+	.empty-state p {
+		margin-bottom: 0;
+	}
+</style>

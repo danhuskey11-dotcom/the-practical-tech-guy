@@ -1,0 +1,123 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const pageTitle = `Privacy Policy | ${SITE_TITLE}`;
+const pageDescription =
+	'Privacy Policy for The Practical Tech Guy, including information about data collection, third-party services, affiliate links, and your privacy.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} />
+	</head>
+
+	<body>
+		<Header />
+
+		<main>
+			<h1>Privacy Policy</h1>
+
+			<p>
+				The Practical Tech Guy respects your privacy. This Privacy
+				Policy explains the types of information that may be collected
+				when you visit this website and how that information may be
+				used.
+			</p>
+
+			<h2>Information You Provide</h2>
+
+			<p>
+				The Practical Tech Guy may receive information that you
+				voluntarily provide, such as your name, email address, or the
+				contents of a message when you contact the website.
+			</p>
+
+			<h2>Automatically Collected Information</h2>
+
+			<p>
+				The website and its hosting infrastructure may process
+				technical information necessary to deliver and secure the
+				website, such as IP addresses, browser information, device
+				information, request information, and timestamps.
+			</p>
+
+			<h2>Analytics</h2>
+
+			<p>
+				The Practical Tech Guy may use analytics services in the future
+				to understand how visitors use the website. This Privacy Policy
+				will be updated to identify material analytics technologies
+				when they are implemented.
+			</p>
+
+			<h2>Affiliate Links</h2>
+
+			<p>
+				The Practical Tech Guy may participate in affiliate programs.
+				If you click an affiliate link, the applicable third-party
+				website or affiliate network may use cookies or other
+				technologies to attribute your visit or purchase.
+			</p>
+
+			<p>
+				For more information about affiliate relationships on this
+				website, please read the
+				<a href="/affiliate-disclosure">Affiliate Disclosure</a>.
+			</p>
+
+			<h2>Third-Party Websites</h2>
+
+			<p>
+				This website may contain links to websites operated by third
+				parties. The Practical Tech Guy does not control the privacy
+				practices of those websites. You should review the privacy
+				policy of a third-party service before providing personal
+				information to that service.
+			</p>
+
+			<h2>Data Security</h2>
+
+			<p>
+				Reasonable measures are used to protect the website and
+				information under the control of The Practical Tech Guy.
+				However, no internet transmission or electronic storage system
+				can be guaranteed to be completely secure.
+			</p>
+
+			<h2>Children's Privacy</h2>
+
+			<p>
+				The Practical Tech Guy is a general-audience technology
+				website and is not directed toward children under 13.
+			</p>
+
+			<h2>Changes to This Privacy Policy</h2>
+
+			<p>
+				This Privacy Policy may be updated as the website develops,
+				including when new analytics, advertising, affiliate,
+				communication, or other third-party services are introduced.
+			</p>
+
+			<h2>Contact</h2>
+
+			<p>
+				If you have questions about this Privacy Policy, contact:
+			</p>
+
+			<p>
+				<a href="mailto:dan@thepracticaltechguy.com">
+					dan@thepracticaltechguy.com
+				</a>
+			</p>
+
+			<p><small>Last updated: November 9, 2026</small></p>
+		</main>
+
+		<Footer />
+	</body>
+</html>

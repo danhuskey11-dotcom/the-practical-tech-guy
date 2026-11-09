@@ -1,0 +1,79 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const pageTitle = `Contact | ${SITE_TITLE}`;
+const pageDescription =
+	'Contact The Practical Tech Guy with questions, feedback, partnership inquiries, or suggestions for future technology guides and reviews.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} />
+	</head>
+
+	<body>
+		<Header />
+
+		<main>
+			<h1>Contact The Practical Tech Guy</h1>
+
+			<p>
+				Have a question, suggestion, or idea for something you'd like
+				to see covered? I'd be glad to hear from you.
+			</p>
+
+			<section>
+				<h2>General Questions & Feedback</h2>
+
+				<p>
+					For questions, feedback, corrections, or suggestions for
+					future guides and reviews, email:
+				</p>
+
+				<p>
+					<a href="mailto:dan@thepracticaltechguy.com">
+						dan@thepracticaltechguy.com
+					</a>
+				</p>
+			</section>
+
+			<section>
+				<h2>Partnerships & Business Inquiries</h2>
+
+				<p>
+					For affiliate partnerships, product review opportunities,
+					software evaluations, or other business inquiries, email:
+				</p>
+
+				<p>
+					<a href="mailto:partners@thepracticaltechguy.com">
+						partners@thepracticaltechguy.com
+					</a>
+				</p>
+			</section>
+
+			<section>
+				<h2>Product Review Requests</h2>
+
+				<p>
+					Product samples, free software licenses, discounts,
+					sponsorships, or other material relationships do not
+					guarantee positive coverage. Relevant relationships will
+					be disclosed when required.
+				</p>
+
+				<p>
+					The Practical Tech Guy focuses on products and services
+					that are useful to everyday technology users, home-office
+					users, small businesses, and IT professionals.
+				</p>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,101 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const pageTitle = `Affiliate Disclosure | ${SITE_TITLE}`;
+const pageDescription =
+	'Affiliate disclosure for The Practical Tech Guy, including information about affiliate links, product recommendations, and sponsored relationships.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={pageTitle} description={pageDescription} />
+	</head>
+
+	<body>
+		<Header />
+
+		<main>
+			<h1>Affiliate Disclosure</h1>
+
+			<p>
+				The Practical Tech Guy believes in being transparent about how
+				this website is supported.
+			</p>
+
+			<h2>Affiliate Links</h2>
+
+			<p>
+				Some links on The Practical Tech Guy may be affiliate links.
+				This means that if you click one of these links and make a
+				purchase, The Practical Tech Guy may receive a commission or
+				other compensation from the retailer or service provider.
+			</p>
+
+			<p>
+				Using an affiliate link does not normally change the price you
+				pay for a product or service.
+			</p>
+
+			<h2>Recommendations and Reviews</h2>
+
+			<p>
+				The goal of The Practical Tech Guy is to provide practical,
+				useful technology advice. Affiliate relationships do not
+				determine whether a product or service receives a positive
+				recommendation.
+			</p>
+
+			<p>
+				Reviews, comparisons, and recommendations are based on factors
+				such as personal experience, testing, research, product
+				features, usefulness, value, and suitability for the intended
+				audience.
+			</p>
+
+			<h2>Free Products and Sponsored Content</h2>
+
+			<p>
+				If The Practical Tech Guy receives a product or service for
+				free or at a discount, or receives payment or other
+				compensation in connection with content, that relationship
+				will be disclosed in the applicable content.
+			</p>
+
+			<h2>Your Support</h2>
+
+			<p>
+				Purchases made through affiliate links can help support the
+				operation of The Practical Tech Guy, including website costs,
+				product testing, and the creation of new guides and reviews.
+			</p>
+
+			<p>
+				You are never required to use an affiliate link, and the goal
+				is always to recommend technology based on its usefulness and
+				value rather than simply because an affiliate relationship
+				exists.
+			</p>
+
+			<h2>Questions</h2>
+
+			<p>
+				If you have questions about an affiliate relationship or a
+				disclosure on The Practical Tech Guy, you can contact:
+			</p>
+
+			<p>
+				<a href="mailto:dan@thepracticaltechguy.com">
+					dan@thepracticaltechguy.com
+				</a>
+			</p>
+
+			<p><small>Last updated: November 9, 2026</small></p>
+		</main>
+
+		<Footer />
+	</body>
+</html>

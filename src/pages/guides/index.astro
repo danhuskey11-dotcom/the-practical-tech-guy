@@ -5,17 +5,17 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = (await getCollection('blog'))
+	.filter((post) => !post.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`Tech Guides | ${SITE_TITLE}`} description="Practical technology guides and step-by-step troubleshooting for Windows, Microsoft 365, hardware, networking, software, security, and AI."/>
 		<style>
 			main {
 				width: 960px;
@@ -89,11 +89,20 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
+		  <header class="page-header">
+	<p class="eyebrow">TECH GUIDES</p>
+	<h1>Practical solutions for real technology problems.</h1>
+	<p>
+		Step-by-step troubleshooting, how-to guides, and straightforward
+		explanations for Windows, Microsoft 365, hardware, networking,
+		software, security, and AI.
+	</p>
+</header>
 			<section>
 				<ul>
 					{posts.map((post) => (
 						<li>
-							<a href={`/blog/${post.id}/`}>
+							<a href={`/guides/${post.id}/`}>
 								{post.data.heroImage && (
 									<Image width={720} height={360} src={post.data.heroImage} alt="" />
 								)}

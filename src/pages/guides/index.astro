@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
-import { categories } from '../../data/categories';
+import { categories, getCategoryName } from '../../data/categories';
 
 const posts = (await getCollection('blog'))
 	.filter((post) => !post.data.draft)
@@ -21,57 +21,126 @@ const posts = (await getCollection('blog'))
 			main {
 				width: 960px;
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
+			
 			.page-header {
 	margin-bottom: 3rem;
+}
+
+.latest-guides {
+	margin-top: 4rem;
+	padding-top: 3rem;
+	border-top: 1px solid var(--light-gray);
+}
+
+.latest-header {
+	max-width: 680px;
+	margin-bottom: 2rem;
+}
+
+.latest-header h2 {
+	margin-bottom: 0.75rem;
+	font-size: clamp(2rem, 4vw, 2.75rem);
+}
+
+.latest-header > p:last-child {
+	margin-bottom: 0;
+	color: var(--slate);
+	font-size: 1rem;
+	line-height: 1.7;
+}
+
+.latest-grid {
+	display: grid;
+	gap: 1.25rem;
+}
+
+.guide-card {
+	padding: 1.75rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+	box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease,
+		transform 0.2s ease;
+}
+
+.guide-card:hover {
+	border-color: var(--blue);
+	box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+	transform: translateY(-2px);
+}
+
+.guide-category {
+	margin: 0 0 0.75rem;
+	color: var(--teal);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.guide-card h3 {
+	margin-bottom: 0.75rem;
+	font-size: 1.5rem;
+	line-height: 1.3;
+}
+
+.guide-card h3 a {
+	color: var(--navy);
+	text-decoration: none;
+}
+
+.guide-card h3 a:hover {
+	color: var(--blue);
+}
+
+.guide-description {
+	margin-bottom: 1.25rem;
+	color: var(--slate);
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.guide-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--light-gray);
+}
+
+.guide-date {
+	color: rgb(var(--gray));
+	font-size: 0.85rem;
+}
+
+.read-guide {
+	color: var(--blue);
+	font-size: 0.9rem;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.read-guide:hover {
+	text-decoration: underline;
+}
+
+.empty-guides {
+	padding: 2rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+}
+
+.empty-guides h3 {
+	margin-bottom: 0.5rem;
+}
+
+.empty-guides p {
+	margin-bottom: 0;
 }
 
 .categories {
@@ -133,6 +202,14 @@ const posts = (await getCollection('blog'))
 				.category-grid {
 	grid-template-columns: repeat(2, 1fr);
 }
+.guide-card {
+	padding: 1.5rem;
+}
+
+.guide-footer {
+	align-items: flex-start;
+	flex-direction: column;
+}
 			}
 		</style>
 	</head>
@@ -160,24 +237,57 @@ const posts = (await getCollection('blog'))
 	      ))}
     </div>
 </section>
-			<section>
-			<h2>Latest Guides</h2>
-				<ul>
-					{posts.map((post) => (
-						<li>
-							<a href={`/guides/${post.id}/`}>
-								{post.data.heroImage && (
-									<Image width={720} height={360} src={post.data.heroImage} alt="" />
-								)}
-								<h4 class="title">{post.data.title}</h4>
-								<p class="date">
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
+			<section class="latest-guides">
+	<div class="latest-header">
+		<p class="eyebrow">LATEST</p>
+		<h2>Latest Guides</h2>
+		<p>
+			The newest troubleshooting guides, how-to articles, and practical
+			technology advice from The Practical Tech Guy.
+		</p>
+	</div>
+
+	{posts.length > 0 ? (
+		<div class="latest-grid">
+			{posts.map((post) => (
+				<article class="guide-card">
+					<p class="guide-category">
+						{getCategoryName(post.data.category)}
+					</p>
+
+					<h3>
+						<a href={`/guides/${post.id}/`}>
+							{post.data.title}
+						</a>
+					</h3>
+
+					<p class="guide-description">
+						{post.data.description}
+					</p>
+
+					<div class="guide-footer">
+						<span class="guide-date">
+							<FormattedDate date={post.data.pubDate} />
+						</span>
+
+						<a class="read-guide" href={`/guides/${post.id}/`}>
+							Read Guide →
+						</a>
+					</div>
+				</article>
+			))}
+		</div>
+	) : (
+		<div class="empty-guides">
+			<h3>New guides are on the way</h3>
+			<p>
+				Practical troubleshooting and technology guides will appear
+				here as they're published.
+			</p>
+		</div>
+	)}
+</section>
+
 		</main>
 		<Footer />
 	</body>

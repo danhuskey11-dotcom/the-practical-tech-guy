@@ -8,7 +8,38 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	contentType,
+	category,
+	tags,
+	author,
+	affiliate,
+} = Astro.props;
+
+const categoryNames: Record<string, string> = {
+	windows: 'Windows',
+	'microsoft-365': 'Microsoft 365',
+	hardware: 'Hardware',
+	networking: 'Networking',
+	software: 'Software',
+	security: 'Security',
+	ai: 'AI',
+};
+
+const contentTypeNames: Record<string, string> = {
+	guide: 'Tech Guide',
+	review: 'Review',
+	comparison: 'Comparison',
+	news: 'News',
+};
+
+const categoryName = categoryNames[category] ?? category;
+const contentTypeName = contentTypeNames[contentType] ?? contentType;
 ---
 
 <html lang="en">
@@ -36,45 +67,175 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
+		    .article-header {
+	margin-bottom: 2.5rem;
+	padding: 2rem 0 2rem;
+	border-bottom: 1px solid var(--light-gray);
+}
+
+.breadcrumbs {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-bottom: 1.5rem;
+	font-size: 0.85rem;
+}
+
+.breadcrumbs a {
+	color: var(--blue);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+	text-decoration: underline;
+}
+
+.breadcrumbs span {
+	color: rgb(var(--gray));
+}
+
+.content-type {
+	margin: 0 0 0.75rem;
+	color: var(--teal);
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.article-header h1 {
+	margin-bottom: 1rem;
+	color: var(--navy);
+	font-size: clamp(2.25rem, 5vw, 3.5rem);
+	line-height: 1.1;
+}
+
+.description {
+	margin-bottom: 1.25rem;
+	color: var(--slate);
+	font-size: 1.1rem;
+	line-height: 1.6;
+}
+
+.article-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 1.25rem;
+	color: rgb(var(--gray));
+	font-size: 0.85rem;
+}
+
+.separator {
+	color: var(--teal);
+}
+
+.tag-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.tag {
+	padding: 0.3rem 0.65rem;
+	background: var(--white);
+	color: var(--navy);
+	border: 1px solid var(--light-gray);
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.affiliate-notice {
+	margin-bottom: 2rem;
+	padding: 1rem 1.25rem;
+	background: #eff6ff;
+	border-left: 4px solid var(--blue);
+	border-radius: 6px;
+	color: var(--slate);
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+.affiliate-notice strong {
+	color: var(--navy);
+}
+
+.affiliate-notice span {
+	margin-left: 0.25rem;
+}
+
+.affiliate-notice a {
+	margin-left: 0.35rem;
+	font-weight: 700;
+}
 		</style>
 	</head>
 
 	<body>
 		<Header />
-		<main>
+		  <main>
 			<article>
 				<div class="hero-image">
 					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
 				</div>
 				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{updatedDate && (
-								<div class="last-updated-on">
-									Last updated on <FormattedDate date={updatedDate} />
-								</div>
-							)}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
+					<header class="article-header">
+	                  <nav class="breadcrumbs" aria-label="Breadcrumb">
+		                <a href="/guides/">Tech Guides</a>
+		                 <span>›</span>
+		                <a href={`/guides/category/${category}/`}>
+			              {categoryName}
+		                </a>
+	                  </nav>
+
+	                  <p class="content-type">{contentTypeName}</p>
+
+	                  <h1>{title}</h1>
+
+	                <p class="description">{description}</p>
+
+	               <div class="article-meta">
+		              <span>By {author}</span>
+
+		              <span class="separator">•</span>
+
+		              <span>
+			            Published <FormattedDate date={pubDate} />
+		              </span>
+
+		             {updatedDate && (
+			            <>
+				     <span class="separator">•</span>
+				     <span>
+					  Updated <FormattedDate date={updatedDate} />
+				     </span>
+			       </>
+		        )}
+	        </div>
+
+	                 {tags.length > 0 && (
+		               <div class="tag-list">
+			           {tags.map((tag) => (
+				       <span class="tag">{tag}</span>
+			             ))}
+		    </div>
+	          )}
+           </header>
+		     {affiliate && (
+	<aside class="affiliate-notice">
+		<strong>Affiliate disclosure:</strong>
+		<span>
+			This article contains affiliate links. If you purchase through
+			one of these links, The Practical Tech Guy may earn a commission
+			at no additional cost to you.
+		</span>
+		<a href="/affiliate-disclosure/">Learn more</a>
+	</aside>
+)}
 					<slot />
 				</div>
 			</article>

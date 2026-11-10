@@ -57,13 +57,19 @@ const posts = (await getCollection('blog'))
 
 		<main>
 			<header class="page-header">
-				<p class="eyebrow">TECH GUIDES</p>
-				<h1>{categoryName}</h1>
-				<p>
-					Practical guides, troubleshooting, and straightforward
-					technology advice for {categoryName}.
-				</p>
-			</header>
+	<nav class="breadcrumbs" aria-label="Breadcrumb">
+		<a href="/guides/">Tech Guides</a>
+		<span>›</span>
+		<span aria-current="page">{categoryName}</span>
+	</nav>
+
+	<h1>{categoryName}</h1>
+
+	<p>
+		Practical guides, troubleshooting, and straightforward
+		technology advice for {categoryName}.
+	</p>
+</header>
 
 			<section>
 				{posts.length > 0 ? (
@@ -163,4 +169,26 @@ const posts = (await getCollection('blog'))
 	.empty-state p {
 		margin-bottom: 0;
 	}
+	.breadcrumbs {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-bottom: 1.5rem;
+	font-size: 0.85rem;
+}
+
+.breadcrumbs a {
+	color: var(--blue);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+	text-decoration: underline;
+}
+
+.breadcrumbs span {
+	color: rgb(var(--gray));
+}
 </style>

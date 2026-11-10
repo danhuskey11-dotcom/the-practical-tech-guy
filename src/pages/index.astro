@@ -3,6 +3,23 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import { getCategoryName } from '../data/categories';
+
+const featuredGuides = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.featured &&
+			post.data.contentType === 'guide',
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	)
+	.slice(0, 3);
 ---
 
 <!doctype html>
@@ -78,27 +95,58 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 <section class="latest">
 	<div class="section-heading">
-		<p class="eyebrow">LATEST</p>
-		<h2>Tech Guides</h2>
+		<p class="eyebrow">FEATURED</p>
+		<h2>Featured Tech Guides</h2>
 		<p>
-			Practical troubleshooting guides, how-to articles, and technology
-			advice are on the way. The first guides will focus on solving
-			real-world Windows, hardware, and software problems.
+			Practical troubleshooting and technology guides built around
+			real-world problems.
 		</p>
 	</div>
 
-	<div class="coming-soon">
-		<div>
-			<p class="coming-soon-label">COMING SOON</p>
-			<h3>Practical guides built around real problems</h3>
+	{featuredGuides.length > 0 ? (
+		<div class="featured-guides">
+			{featuredGuides.map((post) => (
+				<article class="featured-guide">
+					<p class="guide-category">
+						{getCategoryName(post.data.category)}
+					</p>
+
+					<h3>
+						<a href={`/guides/${post.id}/`}>
+							{post.data.title}
+						</a>
+					</h3>
+
+					<p class="guide-description">
+						{post.data.description}
+					</p>
+
+					<div class="guide-meta">
+						<span>
+							<FormattedDate date={post.data.pubDate} />
+						</span>
+
+						<a href={`/guides/${post.id}/`}>
+							Read Guide →
+						</a>
+					</div>
+				</article>
+			))}
+		</div>
+	) : (
+		<div class="empty-featured">
+			<h3>New guides are on the way</h3>
 			<p>
-				Step-by-step troubleshooting and straightforward explanations,
-				with an emphasis on understanding what went wrong and how to
-				fix it.
+				Practical troubleshooting and technology guides will appear
+				here as they're published.
 			</p>
 		</div>
+	)}
 
-		<a class="button secondary" href="/guides">View Tech Guides</a>
+	<div class="view-all-guides">
+		<a class="button secondary" href="/guides/">
+			View All Tech Guides
+		</a>
 	</div>
 </section>
 
@@ -263,51 +311,97 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	line-height: 1.7;
 }
 
-.coming-soon {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 2rem;
+.featured-guides {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.25rem;
 	margin-top: 2rem;
-	padding: 2rem;
-	background: var(--navy);
+}
+
+.featured-guide {
+	display: flex;
+	flex-direction: column;
+	padding: 1.75rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
 	border-radius: 12px;
+	box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
 }
 
-.coming-soon > div {
-	max-width: 500px;
-}
-
-.coming-soon-label {
-	margin: 0 0 0.5rem;
-	color: #5eead4;
+.guide-category {
+	margin: 0 0 0.75rem;
+	color: var(--teal);
 	font-size: 0.75rem;
 	font-weight: 700;
-	letter-spacing: 0.12em;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
 }
 
-.coming-soon h3 {
-	margin: 0 0 0.75rem;
-	color: var(--white);
-	font-size: 1.4rem;
+.featured-guide h3 {
+	margin-bottom: 0.75rem;
+	font-size: 1.25rem;
+	line-height: 1.3;
 }
 
-.coming-soon p:not(.coming-soon-label) {
-	margin: 0;
-	color: #cbd5e1;
+.featured-guide h3 a {
+	color: var(--navy);
+	text-decoration: none;
+}
+
+.featured-guide h3 a:hover {
+	color: var(--blue);
+}
+
+.guide-description {
+	flex-grow: 1;
+	margin-bottom: 1.25rem;
+	color: var(--slate);
 	font-size: 0.95rem;
 	line-height: 1.6;
 }
 
-.coming-soon .button.secondary {
-	flex-shrink: 0;
-	color: var(--white);
-	border-color: #64748b;
+.guide-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--light-gray);
+	font-size: 0.8rem;
 }
 
-.coming-soon .button.secondary:hover {
-	color: var(--white);
-	border-color: var(--white);
+.guide-meta span {
+	color: rgb(var(--gray));
+}
+
+.guide-meta a {
+	color: var(--blue);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.guide-meta a:hover {
+	text-decoration: underline;
+}
+
+.empty-featured {
+	margin-top: 2rem;
+	padding: 2rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+}
+
+.empty-featured h3 {
+	margin-bottom: 0.5rem;
+}
+
+.empty-featured p {
+	margin-bottom: 0;
+}
+
+.view-all-guides {
+	margin-top: 1.5rem;
 }
 
 @media (max-width: 720px) {
@@ -339,10 +433,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			padding: 1.5rem;
 		}
 
-		.coming-soon {
-			align-items: flex-start;
-			flex-direction: column;
-			padding: 1.5rem;
-		}
+		.featured-guides {
+	grid-template-columns: 1fr;
+}
+
+.guide-meta {
+	align-items: flex-start;
+	flex-direction: column;
+}
 	}
 </style>

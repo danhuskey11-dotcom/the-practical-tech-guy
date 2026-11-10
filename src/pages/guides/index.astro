@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
+import { categories } from '../../data/categories';
 
 const posts = (await getCollection('blog'))
 	.filter((post) => !post.data.draft)
@@ -152,14 +153,12 @@ const posts = (await getCollection('blog'))
 	<h2>Browse by Topic</h2>
 
 	<div class="category-grid">
-		<a href="/guides/category/windows/">Windows</a>
-		<a href="/guides/category/microsoft-365/">Microsoft 365</a>
-		<a href="/guides/category/hardware/">Hardware</a>
-		<a href="/guides/category/networking/">Networking</a>
-		<a href="/guides/category/software/">Software</a>
-		<a href="/guides/category/security/">Security</a>
-		<a href="/guides/category/ai/">AI</a>
-	</div>
+	  {categories.map((category) => (
+		<a href={`/guides/category/${category.slug}/`}>
+			{category.name}
+		</a>
+	      ))}
+    </div>
 </section>
 			<section>
 			<h2>Latest Guides</h2>

@@ -5,18 +5,9 @@ import Footer from '../../../components/Footer.astro';
 import FormattedDate from '../../../components/FormattedDate.astro';
 import Header from '../../../components/Header.astro';
 import { SITE_TITLE } from '../../../consts';
+import { categories } from '../../../data/categories';
 
 export function getStaticPaths() {
-	const categories = [
-		{ slug: 'windows', name: 'Windows' },
-		{ slug: 'microsoft-365', name: 'Microsoft 365' },
-		{ slug: 'hardware', name: 'Hardware' },
-		{ slug: 'networking', name: 'Networking' },
-		{ slug: 'software', name: 'Software' },
-		{ slug: 'security', name: 'Security' },
-		{ slug: 'ai', name: 'AI' },
-	];
-
 	return categories.map((category) => ({
 		params: {
 			category: category.slug,

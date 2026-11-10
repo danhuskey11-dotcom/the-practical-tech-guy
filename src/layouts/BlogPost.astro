@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { getCategoryName } from '../data/categories';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -21,16 +22,6 @@ const {
 	affiliate,
 } = Astro.props;
 
-const categoryNames: Record<string, string> = {
-	windows: 'Windows',
-	'microsoft-365': 'Microsoft 365',
-	hardware: 'Hardware',
-	networking: 'Networking',
-	software: 'Software',
-	security: 'Security',
-	ai: 'AI',
-};
-
 const contentTypeNames: Record<string, string> = {
 	guide: 'Tech Guide',
 	review: 'Review',
@@ -38,7 +29,7 @@ const contentTypeNames: Record<string, string> = {
 	news: 'News',
 };
 
-const categoryName = categoryNames[category] ?? category;
+const categoryName = getCategoryName(category);
 const contentTypeName = contentTypeNames[contentType] ?? contentType;
 ---
 

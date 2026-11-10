@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { getCategoryName } from '../data/categories';
+import { getReviewCategoryName } from '../data/reviewCategories';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -17,10 +18,12 @@ const {
 	heroImage,
 	contentType,
 	category,
+	reviewCategory,
 	tags,
 	author,
 	affiliate,
 } = Astro.props;
+
 
 const contentTypeNames: Record<string, string> = {
 	guide: 'Tech Guide',
@@ -30,7 +33,26 @@ const contentTypeNames: Record<string, string> = {
 };
 
 const categoryName = getCategoryName(category);
-const contentTypeName = contentTypeNames[contentType] ?? contentType;
+const contentTypeName =
+	contentTypeNames[contentType] ?? contentType;
+
+const isReview = contentType === 'review';
+
+const sectionName = isReview
+	? 'Reviews'
+	: 'Tech Guides';
+
+const sectionUrl = isReview
+	? '/reviews/'
+	: '/guides/';
+
+const displayCategory = isReview && reviewCategory
+	? getReviewCategoryName(reviewCategory)
+	: getCategoryName(category);
+
+const categoryUrl = isReview && reviewCategory
+	? `/reviews/category/${reviewCategory}/`
+	: `/guides/category/${category}/`;
 ---
 
 <html lang="en">
@@ -176,12 +198,16 @@ const contentTypeName = contentTypeNames[contentType] ?? contentType;
 				<div class="prose">
 					<header class="article-header">
 	                  <nav class="breadcrumbs" aria-label="Breadcrumb">
-		                <a href="/guides/">Tech Guides</a>
-		                 <span>›</span>
-		                <a href={`/guides/category/${category}/`}>
-			              {categoryName}
-		                </a>
-	                  </nav>
+						<a href={sectionUrl}>
+							{sectionName}
+						</a>
+
+						<span>›</span>
+
+						<a href={categoryUrl}>
+							{displayCategory}
+						</a>
+					</nav>
 
 	                  <p class="content-type">{contentTypeName}</p>
 

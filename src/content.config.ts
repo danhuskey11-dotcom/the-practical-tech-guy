@@ -34,6 +34,14 @@ const blog = defineCollection({
 				'ai',
 			]),
 
+			reviewCategory: z
+				.enum([
+					'hardware',
+					'software',
+					'services',
+				])
+				.optional(),
+
 			tags: z.array(z.string()).default([]),
 
 			author: z.string().default('Dan Huskey'),

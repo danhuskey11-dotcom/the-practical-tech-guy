@@ -1,65 +1,343 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
+import {
+	reviewCategories,
+	getReviewCategoryName,
+} from '../data/reviewCategories';
+
+const reviews = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.contentType === 'review',
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	);
 
 const pageTitle = `Reviews & Recommendations | ${SITE_TITLE}`;
+
 const pageDescription =
-	'Practical technology reviews, comparisons, and recommendations focused on helping you choose products and software that are actually worth your money.';
+	'Practical technology reviews and recommendations focused on helping you decide which hardware, software, and services are actually worth your money.';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={pageTitle} description={pageDescription} />
+		<BaseHead
+			title={pageTitle}
+			description={pageDescription}
+		/>
 	</head>
 
 	<body>
 		<Header />
 
 		<main>
-			<h1>Reviews & Recommendations</h1>
+			<header class="page-header">
+				<p class="eyebrow">REVIEWS & RECOMMENDATIONS</p>
 
-			<p>
-				Honest, practical reviews and comparisons of technology,
-				software, and services designed to help you decide what's
-				actually worth your money.
-			</p>
+				<h1>
+					Practical reviews focused on what actually matters.
+				</h1>
 
-			<section>
-				<h2>Software</h2>
 				<p>
-					Reviews and comparisons of productivity tools, security
-					software, cloud services, AI tools, and other software
-					I've tested or researched.
+					Straightforward reviews and recommendations for
+					technology, software, and services, with an emphasis
+					on usefulness, reliability, value, and the trade-offs
+					you should know about before you buy.
 				</p>
+			</header>
+
+			<section class="review-categories">
+				<h2>Browse Reviews</h2>
+
+				<div class="review-category-grid">
+					{reviewCategories.map((category) => (
+						<a
+							class="review-category-card"
+							href={`/reviews/category/${category.slug}/`}
+						>
+							<p class="category-label">REVIEWS</p>
+
+							<h3>{category.name}</h3>
+
+							<p>{category.description}</p>
+
+							<span>
+								Explore {category.name} →
+							</span>
+						</a>
+					))}
+				</div>
 			</section>
 
-			<section>
-				<h2>Hardware</h2>
-				<p>
-					Practical recommendations for computers, monitors,
-					docking stations, webcams, networking equipment, storage,
-					and other technology.
-				</p>
-			</section>
+			<section class="latest-reviews">
+				<div class="latest-header">
+					<p class="eyebrow">LATEST</p>
+					<h2>Latest Reviews</h2>
 
-			<section>
-				<h2>Comparisons</h2>
-				<p>
-					Side-by-side comparisons that focus on the differences
-					that actually matter when deciding which product or
-					service to buy.
-				</p>
-			</section>
+					<p>
+						The newest technology reviews and recommendations
+						from The Practical Tech Guy.
+					</p>
+				</div>
 
-			<section>
-				<h2>Latest Reviews</h2>
-				<p>Reviews and recommendations are coming soon.</p>
+				{reviews.length > 0 ? (
+					<div class="review-grid">
+						{reviews.map((review) => (
+							<article class="review-card">
+								<p class="review-type">
+									{
+										review.data.reviewCategory
+											? getReviewCategoryName(
+													review.data.reviewCategory,
+												)
+											: 'Review'
+									}
+								</p>
+
+								<h3>
+									<a href={`/reviews/${review.id}/`}>
+										{review.data.title}
+									</a>
+								</h3>
+
+								<p class="review-description">
+									{review.data.description}
+								</p>
+
+								<div class="review-footer">
+									<span>
+										<FormattedDate
+											date={review.data.pubDate}
+										/>
+									</span>
+
+									<a
+										class="read-review"
+										href={`/reviews/${review.id}/`}
+									>
+										Read Review →
+									</a>
+								</div>
+							</article>
+						))}
+					</div>
+				) : (
+					<div class="empty-reviews">
+						<h3>Reviews are coming soon</h3>
+
+						<p>
+							Hardware, software, and technology-service
+							reviews will appear here as they're published.
+						</p>
+					</div>
+				)}
 			</section>
 		</main>
 
 		<Footer />
 	</body>
 </html>
+
+<style>
+	main {
+		width: 960px;
+		max-width: calc(100% - 2em);
+	}
+
+	.page-header {
+		margin-bottom: 4rem;
+	}
+
+	.page-header > p:last-child {
+		max-width: 760px;
+		color: var(--slate);
+	}
+
+	.review-categories {
+		margin-bottom: 4rem;
+	}
+
+	.review-categories h2 {
+		margin-bottom: 1.5rem;
+	}
+
+	.review-category-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.review-category-card {
+		display: flex;
+		flex-direction: column;
+		min-height: 240px;
+		padding: 1.75rem;
+		background: var(--white);
+		color: var(--slate);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+		text-decoration: none;
+		box-shadow: 0 4px 16px rgba(15, 39, 68, 0.05);
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.review-category-card:hover {
+		color: var(--slate);
+		border-color: var(--blue);
+		box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.category-label,
+	.review-type {
+		margin: 0 0 0.75rem;
+		color: var(--teal);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.review-category-card h3 {
+		margin-bottom: 0.75rem;
+		color: var(--navy);
+		font-size: 1.4rem;
+	}
+
+	.review-category-card p:not(.category-label) {
+		flex-grow: 1;
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.review-category-card span {
+		color: var(--blue);
+		font-size: 0.9rem;
+		font-weight: 700;
+	}
+
+	.latest-reviews {
+		padding-top: 3rem;
+		border-top: 1px solid var(--light-gray);
+	}
+
+	.latest-header {
+		max-width: 680px;
+		margin-bottom: 2rem;
+	}
+
+	.latest-header h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.latest-header > p:last-child {
+		margin-bottom: 0;
+		color: var(--slate);
+	}
+
+	.review-grid {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.review-card {
+		padding: 1.75rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+		box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
+	}
+
+	.review-card h3 {
+		margin-bottom: 0.75rem;
+		font-size: 1.5rem;
+	}
+
+	.review-card h3 a {
+		color: var(--navy);
+		text-decoration: none;
+	}
+
+	.review-card h3 a:hover {
+		color: var(--blue);
+	}
+
+	.review-description {
+		color: var(--slate);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.review-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--light-gray);
+	}
+
+	.review-footer span {
+		color: rgb(var(--gray));
+		font-size: 0.85rem;
+	}
+
+	.read-review {
+		color: var(--blue);
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.read-review:hover {
+		text-decoration: underline;
+	}
+
+	.empty-reviews {
+		padding: 2rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+	}
+
+	.empty-reviews h3 {
+		margin-bottom: 0.5rem;
+	}
+
+	.empty-reviews p {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 720px) {
+		.review-category-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.review-category-card {
+			min-height: auto;
+			padding: 1.5rem;
+		}
+
+		.review-card {
+			padding: 1.5rem;
+		}
+
+		.review-footer {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+</style>

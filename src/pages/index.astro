@@ -6,6 +6,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import { getCategoryName } from '../data/categories';
+import { getReviewCategoryName } from '../data/reviewCategories';
 
 const featuredGuides = (await getCollection('blog'))
 	.filter(
@@ -13,6 +14,20 @@ const featuredGuides = (await getCollection('blog'))
 			!post.data.draft &&
 			post.data.featured &&
 			post.data.contentType === 'guide',
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	)
+	.slice(0, 3);
+
+const featuredReviews = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.featured &&
+			post.data.contentType === 'review',
 	)
 	.sort(
 		(a, b) =>
@@ -93,9 +108,85 @@ const featuredGuides = (await getCollection('blog'))
 	</div>
    </section>
 
+<section class="featured-reviews-section">
+	<div class="section-heading">
+		<p class="eyebrow">REVIEWS</p>
+		<h2>Featured Reviews & Recommendations</h2>
+
+		<p>
+			Practical reviews of hardware, software, and technology
+			services focused on usefulness, reliability, value, and
+			the trade-offs worth knowing about before you buy.
+		</p>
+	</div>
+
+	{featuredReviews.length > 0 ? (
+		<div class="featured-reviews">
+			{featuredReviews.map((review) => (
+				<article class="featured-review">
+					<p class="review-category">
+						{
+							review.data.reviewCategory
+								? getReviewCategoryName(
+										review.data.reviewCategory,
+									)
+								: 'Review'
+						}
+					</p>
+
+					<h3>
+						<a href={`/reviews/${review.id}/`}>
+							{review.data.title}
+						</a>
+					</h3>
+
+					<p class="review-description">
+						{review.data.description}
+					</p>
+
+					<div class="review-meta">
+						<span>
+							<FormattedDate
+								date={review.data.pubDate}
+							/>
+						</span>
+
+						<a href={`/reviews/${review.id}/`}>
+							Read Review →
+						</a>
+					</div>
+				</article>
+			))}
+		</div>
+	) : (
+		<div class="reviews-empty-state">
+			<div>
+				<p class="empty-label">COMING SOON</p>
+
+				<h3>
+					Practical reviews without the hype
+				</h3>
+
+				<p>
+					Hardware, software, and technology-service reviews
+					will appear here as they're published.
+				</p>
+			</div>
+
+			<a
+				class="button secondary"
+				href="/reviews/"
+			>
+				Browse Reviews
+			</a>
+		</div>
+	)}
+</section>
+
+
 <section class="latest">
 	<div class="section-heading">
-		<p class="eyebrow">FEATURED</p>
+		<p class="eyebrow">GUIDES</p>
 		<h2>Featured Tech Guides</h2>
 		<p>
 			Practical troubleshooting and technology guides built around
@@ -403,6 +494,137 @@ const featuredGuides = (await getCollection('blog'))
 .view-all-guides {
 	margin-top: 1.5rem;
 }
+.featured-reviews-section {
+	padding: 1rem 0 4rem;
+}
+
+.featured-reviews-section .section-heading {
+	max-width: 680px;
+}
+
+.featured-reviews-section .section-heading > p:last-child {
+	color: var(--slate);
+	font-size: 1rem;
+	line-height: 1.7;
+}
+
+.featured-reviews {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.25rem;
+	margin-top: 2rem;
+}
+
+.featured-review {
+	display: flex;
+	flex-direction: column;
+	padding: 1.75rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+	box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease,
+		transform 0.2s ease;
+}
+
+.featured-review:hover {
+	border-color: var(--blue);
+	box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+	transform: translateY(-2px);
+}
+
+.review-category {
+	margin: 0 0 0.75rem;
+	color: var(--teal);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.featured-review h3 {
+	margin-bottom: 0.75rem;
+	font-size: 1.25rem;
+	line-height: 1.3;
+}
+
+.featured-review h3 a {
+	color: var(--navy);
+	text-decoration: none;
+}
+
+.featured-review h3 a:hover {
+	color: var(--blue);
+}
+
+.review-description {
+	flex-grow: 1;
+	margin-bottom: 1.25rem;
+	color: var(--slate);
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.review-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--light-gray);
+	font-size: 0.8rem;
+}
+
+.review-meta span {
+	color: rgb(var(--gray));
+}
+
+.review-meta a {
+	color: var(--blue);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.review-meta a:hover {
+	text-decoration: underline;
+}
+
+.reviews-empty-state {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	margin-top: 2rem;
+	padding: 2rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+}
+
+.reviews-empty-state > div {
+	max-width: 600px;
+}
+
+.empty-label {
+	margin: 0 0 0.5rem;
+	color: var(--teal);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+}
+
+.reviews-empty-state h3 {
+	margin-bottom: 0.5rem;
+	font-size: 1.35rem;
+}
+
+.reviews-empty-state p:not(.empty-label) {
+	margin-bottom: 0;
+	color: var(--slate);
+	font-size: 0.95rem;
+}
 
 @media (max-width: 720px) {
 		.hero {
@@ -440,6 +662,20 @@ const featuredGuides = (await getCollection('blog'))
 .guide-meta {
 	align-items: flex-start;
 	flex-direction: column;
+}
+.featured-reviews {
+	grid-template-columns: 1fr;
+}
+
+.review-meta {
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+.reviews-empty-state {
+	align-items: flex-start;
+	flex-direction: column;
+	padding: 1.5rem;
 }
 	}
 </style>

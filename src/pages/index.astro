@@ -7,6 +7,7 @@ import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import { getCategoryName } from '../data/categories';
 import { getReviewCategoryName } from '../data/reviewCategories';
+import { getComparisonCategoryName } from '../data/comparisonCategories';
 
 const featuredGuides = (await getCollection('blog'))
 	.filter(
@@ -28,6 +29,20 @@ const featuredReviews = (await getCollection('blog'))
 			!post.data.draft &&
 			post.data.featured &&
 			post.data.contentType === 'review',
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	)
+	.slice(0, 3);
+
+const featuredComparisons = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.featured &&
+			post.data.contentType === 'comparison',
 	)
 	.sort(
 		(a, b) =>
@@ -107,6 +122,106 @@ const featuredReviews = (await getCollection('blog'))
 		</article>
 	</div>
    </section>
+
+<section class="featured-comparisons-section">
+	<div class="section-heading">
+		<p class="eyebrow">COMPARE</p>
+
+		<h2>Featured Comparisons</h2>
+
+		<p>
+			Side-by-side comparisons focused on the differences that
+			actually matter when choosing between hardware, software,
+			plans, and technology services.
+		</p>
+	</div>
+
+	{featuredComparisons.length > 0 ? (
+		<div class="featured-comparisons">
+			{featuredComparisons.map((comparison) => (
+				<article class="featured-comparison">
+					<p class="comparison-category">
+						{
+							comparison.data.comparisonCategory
+								? getComparisonCategoryName(
+										comparison.data.comparisonCategory,
+									)
+								: 'Comparison'
+						}
+					</p>
+
+					<h3>
+						<a
+							href={`/comparisons/${comparison.id}/`}
+						>
+							{comparison.data.title}
+						</a>
+					</h3>
+
+					<p class="comparison-description">
+						{comparison.data.description}
+					</p>
+
+					{comparison.data.products &&
+						comparison.data.products.length > 0 && (
+							<div class="comparison-products">
+								{comparison.data.products.map(
+									(product, index) => (
+										<>
+											<span>{product.name}</span>
+
+											{index <
+												comparison.data.products!
+													.length -
+													1 && (
+												<strong>vs.</strong>
+											)}
+										</>
+									),
+								)}
+							</div>
+						)}
+
+					<div class="comparison-meta">
+						<span>
+							<FormattedDate
+								date={comparison.data.pubDate}
+							/>
+						</span>
+
+						<a
+							href={`/comparisons/${comparison.id}/`}
+						>
+							Read Comparison →
+						</a>
+					</div>
+				</article>
+			))}
+		</div>
+	) : (
+		<div class="comparisons-empty-state">
+			<div>
+				<p class="empty-label">COMING SOON</p>
+
+				<h3>
+					Practical side-by-side comparisons
+				</h3>
+
+				<p>
+					Hardware, software, plan, and technology-service
+					comparisons will appear here as they're published.
+				</p>
+			</div>
+
+			<a
+				class="button secondary"
+				href="/comparisons/"
+			>
+				Browse Comparisons
+			</a>
+		</div>
+	)}
+</section>
 
 <section class="featured-reviews-section">
 	<div class="section-heading">
@@ -625,6 +740,152 @@ const featuredReviews = (await getCollection('blog'))
 	color: var(--slate);
 	font-size: 0.95rem;
 }
+.featured-comparisons-section {
+	padding: 1rem 0 4rem;
+}
+
+.featured-comparisons-section .section-heading {
+	max-width: 680px;
+}
+
+.featured-comparisons-section .section-heading > p:last-child {
+	color: var(--slate);
+	font-size: 1rem;
+	line-height: 1.7;
+}
+
+.featured-comparisons {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.25rem;
+	margin-top: 2rem;
+}
+
+.featured-comparison {
+	display: flex;
+	flex-direction: column;
+	padding: 1.75rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+	box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease,
+		transform 0.2s ease;
+}
+
+.featured-comparison:hover {
+	border-color: var(--blue);
+	box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+	transform: translateY(-2px);
+}
+
+.comparison-category {
+	margin: 0 0 0.75rem;
+	color: var(--teal);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.featured-comparison h3 {
+	margin-bottom: 0.75rem;
+	font-size: 1.25rem;
+	line-height: 1.3;
+}
+
+.featured-comparison h3 a {
+	color: var(--navy);
+	text-decoration: none;
+}
+
+.featured-comparison h3 a:hover {
+	color: var(--blue);
+}
+
+.comparison-description {
+	flex-grow: 1;
+	margin-bottom: 1rem;
+	color: var(--slate);
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.comparison-products {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.4rem;
+	margin-bottom: 1.25rem;
+	padding: 0.75rem;
+	background: var(--off-white);
+	border-radius: 8px;
+	font-size: 0.8rem;
+}
+
+.comparison-products span {
+	color: var(--navy);
+	font-weight: 600;
+}
+
+.comparison-products strong {
+	color: var(--teal);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+}
+
+.comparison-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--light-gray);
+	font-size: 0.8rem;
+}
+
+.comparison-meta span {
+	color: rgb(var(--gray));
+}
+
+.comparison-meta a {
+	color: var(--blue);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.comparison-meta a:hover {
+	text-decoration: underline;
+}
+
+.comparisons-empty-state {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	margin-top: 2rem;
+	padding: 2rem;
+	background: var(--white);
+	border: 1px solid var(--light-gray);
+	border-radius: 12px;
+}
+
+.comparisons-empty-state > div {
+	max-width: 600px;
+}
+
+.comparisons-empty-state h3 {
+	margin-bottom: 0.5rem;
+	font-size: 1.35rem;
+}
+
+.comparisons-empty-state p:not(.empty-label) {
+	margin-bottom: 0;
+	color: var(--slate);
+	font-size: 0.95rem;
+}
 
 @media (max-width: 720px) {
 		.hero {
@@ -673,6 +934,20 @@ const featuredReviews = (await getCollection('blog'))
 }
 
 .reviews-empty-state {
+	align-items: flex-start;
+	flex-direction: column;
+	padding: 1.5rem;
+}
+.featured-comparisons {
+	grid-template-columns: 1fr;
+}
+
+.comparison-meta {
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+.comparisons-empty-state {
 	align-items: flex-start;
 	flex-direction: column;
 	padding: 1.5rem;

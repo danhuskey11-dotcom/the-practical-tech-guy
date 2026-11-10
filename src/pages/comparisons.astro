@@ -1,0 +1,360 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import {comparisonCategories,getComparisonCategoryName,} from '../data/comparisonCategories';
+
+const comparisons = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.contentType === 'comparison',
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	);
+
+const pageTitle = `Comparisons | ${SITE_TITLE}`;
+
+const pageDescription =
+	'Practical side-by-side technology comparisons designed to help you choose between hardware, software, services, and technology plans.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={pageTitle}
+			description={pageDescription}
+		/>
+	</head>
+
+	<body>
+		<Header />
+
+		<main>
+			<header class="page-header">
+				<p class="eyebrow">COMPARISONS</p>
+
+				<h1>
+					Side-by-side comparisons for smarter tech decisions.
+				</h1>
+
+				<p>
+					Practical comparisons focused on the differences that
+					actually matter, including features, limitations,
+					pricing, value, and which option makes the most sense
+					for different users.
+				</p>
+			</header>
+
+			<section class="comparison-categories">
+				<h2>Browse Comparisons</h2>
+
+				<div class="comparison-category-grid">
+					{comparisonCategories.map((category) => (
+						<a
+							class="comparison-category-card"
+							href={`/comparisons/category/${category.slug}/`}
+						>
+							<p class="category-label">
+								COMPARE
+							</p>
+
+							<h3>{category.name}</h3>
+
+							<p>{category.description}</p>
+
+							<span>
+								Explore {category.name} →
+							</span>
+						</a>
+					))}
+				</div>
+			</section>
+
+			<section class="latest-comparisons">
+				<div class="latest-header">
+					<p class="eyebrow">LATEST</p>
+
+					<h2>Latest Comparisons</h2>
+
+					<p>
+						The newest side-by-side technology comparisons
+						from The Practical Tech Guy.
+					</p>
+				</div>
+
+				{comparisons.length > 0 ? (
+					<div class="comparison-grid">
+						{comparisons.map((comparison) => (
+							<article class="comparison-card">
+								<p class="comparison-type">
+									{
+										comparison.data.comparisonCategory
+											? getComparisonCategoryName(
+													comparison.data
+														.comparisonCategory,
+												)
+											: 'Comparison'
+									}
+								</p>
+
+								<h3>
+									<a
+										href={`/comparisons/${comparison.id}/`}
+									>
+										{comparison.data.title}
+									</a>
+								</h3>
+
+								<p class="comparison-description">
+									{comparison.data.description}
+								</p>
+
+								<div class="comparison-footer">
+									<span>
+										<FormattedDate
+											date={comparison.data.pubDate}
+										/>
+									</span>
+
+									<a
+										class="read-comparison"
+										href={`/comparisons/${comparison.id}/`}
+									>
+										Read Comparison →
+									</a>
+								</div>
+							</article>
+						))}
+					</div>
+				) : (
+					<div class="empty-comparisons">
+						<h3>
+							Comparisons are coming soon
+						</h3>
+
+						<p>
+							Side-by-side comparisons of hardware,
+							software, plans, and technology services
+							will appear here as they're published.
+						</p>
+					</div>
+				)}
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	main {
+		width: 960px;
+		max-width: calc(100% - 2em);
+	}
+
+	.page-header {
+		margin-bottom: 4rem;
+	}
+
+	.page-header > p:last-child {
+		max-width: 760px;
+		color: var(--slate);
+	}
+
+	.comparison-categories {
+		margin-bottom: 4rem;
+	}
+
+	.comparison-categories h2 {
+		margin-bottom: 1.5rem;
+	}
+
+	.comparison-category-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.comparison-category-card {
+		display: flex;
+		flex-direction: column;
+		min-height: 240px;
+		padding: 1.75rem;
+		background: var(--white);
+		color: var(--slate);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+		text-decoration: none;
+		box-shadow: 0 4px 16px rgba(15, 39, 68, 0.05);
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.comparison-category-card:hover {
+		color: var(--slate);
+		border-color: var(--blue);
+		box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.category-label,
+	.comparison-type {
+		margin: 0 0 0.75rem;
+		color: var(--teal);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.comparison-category-card h3 {
+		margin-bottom: 0.75rem;
+		color: var(--navy);
+		font-size: 1.4rem;
+	}
+
+	.comparison-category-card p:not(.category-label) {
+		flex-grow: 1;
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.comparison-category-card span {
+		color: var(--blue);
+		font-size: 0.9rem;
+		font-weight: 700;
+	}
+
+	.latest-comparisons {
+		padding-top: 3rem;
+		border-top: 1px solid var(--light-gray);
+	}
+
+	.latest-header {
+		max-width: 680px;
+		margin-bottom: 2rem;
+	}
+
+	.latest-header h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.latest-header > p:last-child {
+		margin-bottom: 0;
+		color: var(--slate);
+	}
+
+	.comparison-grid {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.comparison-card {
+		padding: 1.75rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+		box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.comparison-card:hover {
+		border-color: var(--blue);
+		box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.comparison-card h3 {
+		margin-bottom: 0.75rem;
+		font-size: 1.5rem;
+		line-height: 1.3;
+	}
+
+	.comparison-card h3 a {
+		color: var(--navy);
+		text-decoration: none;
+	}
+
+	.comparison-card h3 a:hover {
+		color: var(--blue);
+	}
+
+	.comparison-description {
+		color: var(--slate);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.comparison-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--light-gray);
+	}
+
+	.comparison-footer span {
+		color: rgb(var(--gray));
+		font-size: 0.85rem;
+	}
+
+	.read-comparison {
+		color: var(--blue);
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.read-comparison:hover {
+		text-decoration: underline;
+	}
+
+	.empty-comparisons {
+		padding: 2rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+	}
+
+	.empty-comparisons h3 {
+		margin-bottom: 0.5rem;
+	}
+
+	.empty-comparisons p {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 720px) {
+		.comparison-category-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.comparison-category-card {
+			min-height: auto;
+			padding: 1.5rem;
+		}
+
+		.comparison-card {
+			padding: 1.5rem;
+		}
+
+		.comparison-footer {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+</style>

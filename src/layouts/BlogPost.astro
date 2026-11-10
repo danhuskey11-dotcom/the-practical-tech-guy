@@ -7,6 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { getCategoryName } from '../data/categories';
 import { getReviewCategoryName } from '../data/reviewCategories';
+import { getComparisonCategoryName } from '../data/comparisonCategories';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -19,6 +20,7 @@ const {
 	contentType,
 	category,
 	reviewCategory,
+	comparisonCategory,
 	tags,
 	author,
 	affiliate,
@@ -37,22 +39,33 @@ const contentTypeName =
 	contentTypeNames[contentType] ?? contentType;
 
 const isReview = contentType === 'review';
+const isComparison = contentType === 'comparison';
 
-const sectionName = isReview
-	? 'Reviews'
-	: 'Tech Guides';
+const sectionName = isComparison
+	? 'Comparisons'
+	: isReview
+		? 'Reviews'
+		: 'Tech Guides';
 
-const sectionUrl = isReview
-	? '/reviews/'
-	: '/guides/';
+const sectionUrl = isComparison
+	? '/comparisons/'
+	: isReview
+		? '/reviews/'
+		: '/guides/';
 
-const displayCategory = isReview && reviewCategory
-	? getReviewCategoryName(reviewCategory)
-	: getCategoryName(category);
+const displayCategory =
+	isComparison && comparisonCategory
+		? getComparisonCategoryName(comparisonCategory)
+		: isReview && reviewCategory
+			? getReviewCategoryName(reviewCategory)
+			: getCategoryName(category);
 
-const categoryUrl = isReview && reviewCategory
-	? `/reviews/category/${reviewCategory}/`
-	: `/guides/category/${category}/`;
+const categoryUrl =
+	isComparison && comparisonCategory
+		? `/comparisons/category/${comparisonCategory}/`
+		: isReview && reviewCategory
+			? `/reviews/category/${reviewCategory}/`
+			: `/guides/category/${category}/`;
 ---
 
 <html lang="en">

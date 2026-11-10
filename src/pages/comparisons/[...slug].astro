@@ -1,0 +1,33 @@
+---
+import {
+	type CollectionEntry,
+	getCollection,
+	render,
+} from 'astro:content';
+
+import BlogPost from '../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+	const comparisons = (await getCollection('blog')).filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.contentType === 'comparison',
+	);
+
+	return comparisons.map((comparison) => ({
+		params: {
+			slug: comparison.id,
+		},
+		props: comparison,
+	}));
+}
+
+type Props = CollectionEntry<'blog'>;
+
+const comparison = Astro.props;
+const { Content } = await render(comparison);
+---
+
+<BlogPost {...comparison.data}>
+	<Content />
+</BlogPost>

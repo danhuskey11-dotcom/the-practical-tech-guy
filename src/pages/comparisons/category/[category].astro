@@ -1,0 +1,312 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import Header from '../../../components/Header.astro';
+import { SITE_TITLE } from '../../../consts';
+import {
+	comparisonCategories,
+	getComparisonCategoryName,
+	getComparisonCategoryDescription,
+} from '../../../data/comparisonCategories';
+
+export function getStaticPaths() {
+	return comparisonCategories.map((category) => ({
+		params: {
+			category: category.slug,
+		},
+		props: {
+			category: category.slug,
+		},
+	}));
+}
+
+const { category } = Astro.props;
+
+const categoryName = getComparisonCategoryName(category);
+
+const categoryDescription =
+	getComparisonCategoryDescription(category);
+
+const comparisons = (await getCollection('blog'))
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.contentType === 'comparison' &&
+			post.data.comparisonCategory === category,
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`${categoryName} Comparisons | ${SITE_TITLE}`}
+			description={categoryDescription}
+		/>
+	</head>
+
+	<body>
+		<Header />
+
+		<main>
+			<header class="page-header">
+				<nav
+					class="breadcrumbs"
+					aria-label="Breadcrumb"
+				>
+					<a href="/comparisons/">
+						Comparisons
+					</a>
+
+					<span>›</span>
+
+					<span aria-current="page">
+						{categoryName}
+					</span>
+				</nav>
+
+				<p class="eyebrow">COMPARISONS</p>
+
+				<h1>{categoryName}</h1>
+
+				<p class="category-description">
+					{categoryDescription}
+				</p>
+			</header>
+
+			<section class="comparison-list">
+				<div class="section-header">
+					<h2>
+						Latest {categoryName} Comparisons
+					</h2>
+				</div>
+
+				{comparisons.length > 0 ? (
+					<div class="comparison-grid">
+						{comparisons.map((comparison) => (
+							<article class="comparison-card">
+								<p class="comparison-label">
+									{categoryName}
+								</p>
+
+								<h3>
+									<a
+										href={`/comparisons/${comparison.id}/`}
+									>
+										{comparison.data.title}
+									</a>
+								</h3>
+
+								<p class="comparison-description">
+									{comparison.data.description}
+								</p>
+
+								<div class="comparison-footer">
+									<span>
+										<FormattedDate
+											date={
+												comparison.data
+													.pubDate
+											}
+										/>
+									</span>
+
+									<a
+										class="read-comparison"
+										href={`/comparisons/${comparison.id}/`}
+									>
+										Read Comparison →
+									</a>
+								</div>
+							</article>
+						))}
+					</div>
+				) : (
+					<div class="empty-state">
+						<h3>
+							{categoryName} comparisons are
+							coming soon
+						</h3>
+
+						<p>
+							New {categoryName.toLowerCase()}
+							comparisons will appear here as
+							they're published.
+						</p>
+
+						<a href="/comparisons/">
+							Browse all comparison categories →
+						</a>
+					</div>
+				)}
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	main {
+		width: 960px;
+		max-width: calc(100% - 2em);
+	}
+
+	.page-header {
+		margin-bottom: 4rem;
+	}
+
+	.breadcrumbs {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin-bottom: 1.5rem;
+		font-size: 0.85rem;
+	}
+
+	.breadcrumbs a {
+		color: var(--blue);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.breadcrumbs a:hover {
+		text-decoration: underline;
+	}
+
+	.breadcrumbs span {
+		color: rgb(var(--gray));
+	}
+
+	.category-description {
+		max-width: 760px;
+		color: var(--slate);
+	}
+
+	.comparison-list {
+		padding-top: 3rem;
+		border-top: 1px solid var(--light-gray);
+	}
+
+	.section-header {
+		margin-bottom: 2rem;
+	}
+
+	.section-header h2 {
+		margin-bottom: 0;
+	}
+
+	.comparison-grid {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.comparison-card {
+		padding: 1.75rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+		box-shadow: 0 4px 16px rgba(15, 39, 68, 0.06);
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.comparison-card:hover {
+		border-color: var(--blue);
+		box-shadow: 0 8px 24px rgba(15, 39, 68, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.comparison-label {
+		margin: 0 0 0.75rem;
+		color: var(--teal);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.comparison-card h3 {
+		margin-bottom: 0.75rem;
+		font-size: 1.5rem;
+		line-height: 1.3;
+	}
+
+	.comparison-card h3 a {
+		color: var(--navy);
+		text-decoration: none;
+	}
+
+	.comparison-card h3 a:hover {
+		color: var(--blue);
+	}
+
+	.comparison-description {
+		color: var(--slate);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.comparison-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--light-gray);
+	}
+
+	.comparison-footer span {
+		color: rgb(var(--gray));
+		font-size: 0.85rem;
+	}
+
+	.read-comparison,
+	.empty-state a {
+		color: var(--blue);
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.read-comparison:hover,
+	.empty-state a:hover {
+		text-decoration: underline;
+	}
+
+	.empty-state {
+		padding: 2rem;
+		background: var(--white);
+		border: 1px solid var(--light-gray);
+		border-radius: 12px;
+	}
+
+	.empty-state h3 {
+		margin-bottom: 0.5rem;
+	}
+
+	.empty-state p {
+		margin-bottom: 1rem;
+	}
+
+	@media (max-width: 720px) {
+		.comparison-card {
+			padding: 1.5rem;
+		}
+
+		.comparison-footer {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+</style>

@@ -42,6 +42,25 @@ const blog = defineCollection({
 				])
 				.optional(),
 
+			comparisonCategory: z
+				.enum([
+					'hardware',
+					'software',
+					'services',
+				])
+				.optional(),
+
+			products: z
+				.array(
+					z.object({
+					name: z.string(),
+					url: z.string().optional(),
+				}),
+			)
+				.optional(),
+
+			winner: z.string().optional(),
+
 			tags: z.array(z.string()).default([]),
 
 			author: z.string().default('Dan Huskey'),

@@ -49,6 +49,7 @@ const comparisons = (await getCollection('blog'))
 		<BaseHead
 			title={`${categoryName} Comparisons | ${SITE_TITLE}`}
 			description={categoryDescription}
+			noindex={comparisons.length === 0}
 		/>
 	</head>
 

@@ -40,6 +40,7 @@ const posts = (await getCollection('blog'))
 		<BaseHead
 			title={`${categoryName} Guides | ${SITE_TITLE}`}
 			description={`Practical ${categoryName} guides, troubleshooting, and technology advice from The Practical Tech Guy.`}
+			noindex={posts.length === 0}
 		/>
 	</head>
 

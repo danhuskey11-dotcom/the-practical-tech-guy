@@ -48,6 +48,7 @@ const reviews = (await getCollection('blog'))
 		<BaseHead
 			title={`${categoryName} Reviews | ${SITE_TITLE}`}
 			description={`${categoryDescription}`}
+			noindex={reviews.length === 0}
 		/>
 	</head>
 

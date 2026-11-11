@@ -294,17 +294,19 @@ const structuredData = {
 		    </div>
 	          )}
            </header>
-		     {affiliate && (
-	<aside class="affiliate-notice">
-		<strong>Affiliate disclosure:</strong>
-		<span>
-			This article contains affiliate links. If you purchase through
-			one of these links, The Practical Tech Guy may earn a commission
-			at no additional cost to you.
-		</span>
-		<a href="/affiliate-disclosure/">Learn more</a>
-	</aside>
-)}
+
+			{affiliate && (
+				<aside class="affiliate-notice">
+					<strong>Affiliate disclosure:</strong>
+					<span>
+						As an Amazon Associate, I earn from qualifying purchases.
+						This does not affect the price you pay or how products are
+						evaluated and recommended.
+					</span>
+					<a href="/affiliate-disclosure/">Learn more</a>
+				</aside>
+			)}
+
 					<slot />
 				</div>
 			</article>

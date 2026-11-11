@@ -30,6 +30,9 @@
 		0 2px 6px rgba(15, 39, 68, 0.08),
 		0 8px 24px rgba(15, 39, 68, 0.1);
 }
+html {
+	scroll-behavior: smooth;
+}
 
 body {
 	font-family: var(--font-atkinson);
@@ -130,8 +133,59 @@ textarea {
 input {
 	font-size: 16px;
 }
-table {
+.prose table {
 	width: 100%;
+	margin: 2rem 0;
+	border: 1px solid var(--light-gray);
+	border-collapse: separate;
+	border-spacing: 0;
+	background: var(--white);
+	border-radius: 10px;
+	overflow: hidden;
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.prose thead {
+	background: var(--navy);
+	color: var(--white);
+}
+
+.prose th {
+	padding: 0.9rem 1rem;
+	color: var(--white);
+	font-weight: 700;
+	text-align: left;
+	border: none;
+	border-bottom: 2px solid var(--teal);
+}
+
+.prose td {
+	padding: 1rem;
+	vertical-align: middle;
+	border: none;
+	border-bottom: 1px solid var(--light-gray);
+}
+
+.prose tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.prose tbody tr:hover {
+	background: #f1f5f9;
+}
+
+.prose td a {
+	display: inline-block;
+	white-space: nowrap;
+	color: var(--blue);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.prose td a:hover {
+	color: var(--navy);
+	text-decoration: underline;
 }
 img {
 	max-width: 100%;
@@ -178,6 +232,41 @@ hr {
 	border: none;
 	border-top: 1px solid rgb(var(--gray-light));
 }
+.prose td:nth-child(2) a {
+	color: var(--navy);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.prose td:nth-child(2) a:hover {
+	color: var(--blue);
+	text-decoration: underline;
+}
+.prose [id] {
+	scroll-margin-top: 2rem;
+}
+.prose .affiliate-link {
+	display: inline-block;
+	font-weight: 700;
+	color: var(--blue);
+	text-decoration: none;
+}
+
+.prose .affiliate-link:hover {
+	color: var(--navy);
+	text-decoration: underline;
+}
+.prose .article-action {
+	display: inline-block;
+	font-weight: 700;
+	color: var(--blue);
+	text-decoration: none;
+}
+
+.prose .article-action:hover {
+	color: var(--navy);
+	text-decoration: underline;
+}
 @media (max-width: 720px) {
 	body {
 		font-size: 17px;
@@ -185,6 +274,19 @@ hr {
 	main {
 		padding: 1em;
 	}
+	.prose {
+	overflow-x: auto;
+}
+
+.prose table {
+	min-width: 720px;
+	font-size: 0.85rem;
+}
+
+.prose th,
+.prose td {
+	padding: 0.75rem;
+}
 }
 
 .sr-only {
@@ -204,3 +306,8 @@ hr {
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+
+
+
+
+

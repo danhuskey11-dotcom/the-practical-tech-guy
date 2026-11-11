@@ -18,7 +18,7 @@ author: Dan Huskey
 
 affiliate: false
 featured: true
-draft: false
+draft: true
 ---
 
 If Windows Device Manager shows **Code 51**, the device you're looking at may not actually be the device causing the problem.

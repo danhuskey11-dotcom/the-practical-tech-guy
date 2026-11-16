@@ -43,7 +43,7 @@ For this guide, I compared current manufacturer specifications, independent test
 
 Click each keyboard to learn more
 
-<a href="#what-to-buy" class="article-action">What Keyboard is Best for You</a> | 
+<a href="#what-to-buy" class="article-action">How to Choose the Right Keyboard</a> | 
 <a href="#look-for" class="article-action">Key Features to Consider</a>
 
 <a id="keychron-q6-ultra-8k"></a>

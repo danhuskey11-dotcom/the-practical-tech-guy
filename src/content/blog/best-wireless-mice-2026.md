@@ -43,7 +43,7 @@ For this guide, I compared current manufacturer specifications, independent test
 
 If you already know what kind of mouse you're looking for, use the table above to jump directly to that recommendation.
 
-<a href="#what-to-buy" class="article-action">How to Choose the Right Mouse for Me</a> | <a href="#what-to-look-for" class="article-action">Features to Consider</a>
+<a href="#what-to-buy" class="article-action">How to Choose the Right Mouse</a> | <a href="#what-to-look-for" class="article-action">Features to Consider</a>
 
 <a id="logitech-mx-master-4"></a>
 

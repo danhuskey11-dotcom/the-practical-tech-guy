@@ -93,7 +93,8 @@ const organizationSchema = {
 		<a class="button primary" href="/guides">Explore Tech Guides</a>
 		<a class="button secondary" href="/reviews">Browse Reviews</a>
 	  </div>
-    </section>
+	  
+	 </section>
 
 
 	<section class="features">
@@ -136,6 +137,81 @@ const organizationSchema = {
 		</article>
 	</div>
    </section>
+
+<section class="featured-reviews-section">
+	<div class="section-heading">
+		<p class="eyebrow">REVIEWS</p>
+		<h2>Featured Reviews & Recommendations</h2>
+
+		<p>
+			Practical reviews of hardware, software, and technology
+			services focused on usefulness, reliability, value, and
+			the trade-offs worth knowing about before you buy.
+		</p>
+	</div>
+
+	{featuredReviews.length > 0 ? (
+		<div class="featured-reviews">
+			{featuredReviews.map((review) => (
+				<article class="featured-review">
+					<p class="review-category">
+						{
+							review.data.reviewCategory
+								? getReviewCategoryName(
+										review.data.reviewCategory,
+									)
+								: 'Review'
+						}
+					</p>
+
+					<h3>
+						<a href={`/reviews/${review.id}/`}>
+							{review.data.title}
+						</a>
+					</h3>
+
+					<p class="review-description">
+						{review.data.description}
+					</p>
+
+					<div class="review-meta">
+						<span>
+							<FormattedDate
+								date={review.data.pubDate}
+							/>
+						</span>
+
+						<a href={`/reviews/${review.id}/`}>
+							Read Review →
+						</a>
+					</div>
+				</article>
+			))}
+		</div>
+	) : (
+		<div class="reviews-empty-state">
+			<div>
+				<p class="empty-label">COMING SOON</p>
+
+				<h3>
+					Practical reviews without the hype
+				</h3>
+
+				<p>
+					Hardware, software, and technology-service reviews
+					will appear here as they're published.
+				</p>
+			</div>
+
+			<a
+				class="button secondary"
+				href="/reviews/"
+			>
+				Browse Reviews
+			</a>
+		</div>
+	)}
+</section>
 
 <section class="featured-comparisons-section">
 	<div class="section-heading">
@@ -237,80 +313,7 @@ const organizationSchema = {
 	)}
 </section>
 
-<section class="featured-reviews-section">
-	<div class="section-heading">
-		<p class="eyebrow">REVIEWS</p>
-		<h2>Featured Reviews & Recommendations</h2>
 
-		<p>
-			Practical reviews of hardware, software, and technology
-			services focused on usefulness, reliability, value, and
-			the trade-offs worth knowing about before you buy.
-		</p>
-	</div>
-
-	{featuredReviews.length > 0 ? (
-		<div class="featured-reviews">
-			{featuredReviews.map((review) => (
-				<article class="featured-review">
-					<p class="review-category">
-						{
-							review.data.reviewCategory
-								? getReviewCategoryName(
-										review.data.reviewCategory,
-									)
-								: 'Review'
-						}
-					</p>
-
-					<h3>
-						<a href={`/reviews/${review.id}/`}>
-							{review.data.title}
-						</a>
-					</h3>
-
-					<p class="review-description">
-						{review.data.description}
-					</p>
-
-					<div class="review-meta">
-						<span>
-							<FormattedDate
-								date={review.data.pubDate}
-							/>
-						</span>
-
-						<a href={`/reviews/${review.id}/`}>
-							Read Review →
-						</a>
-					</div>
-				</article>
-			))}
-		</div>
-	) : (
-		<div class="reviews-empty-state">
-			<div>
-				<p class="empty-label">COMING SOON</p>
-
-				<h3>
-					Practical reviews without the hype
-				</h3>
-
-				<p>
-					Hardware, software, and technology-service reviews
-					will appear here as they're published.
-				</p>
-			</div>
-
-			<a
-				class="button secondary"
-				href="/reviews/"
-			>
-				Browse Reviews
-			</a>
-		</div>
-	)}
-</section>
 
 
 <section class="latest">

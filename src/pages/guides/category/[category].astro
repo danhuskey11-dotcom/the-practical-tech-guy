@@ -25,6 +25,7 @@ const posts = (await getCollection('blog'))
 	.filter(
 		(post) =>
 			!post.data.draft &&
+			post.data.contentType === 'guide' &&
 			post.data.category === category,
 	)
 	.sort(

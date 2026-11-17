@@ -9,8 +9,16 @@ import { SITE_TITLE } from '../../consts';
 import { categories, getCategoryName } from '../../data/categories';
 
 const posts = (await getCollection('blog'))
-	.filter((post) => !post.data.draft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	.filter(
+		(post) =>
+			!post.data.draft &&
+			post.data.contentType === 'guide',
+	)
+	.sort(
+		(a, b) =>
+			b.data.pubDate.valueOf() -
+			a.data.pubDate.valueOf(),
+	);
 ---
 
 <!doctype html>

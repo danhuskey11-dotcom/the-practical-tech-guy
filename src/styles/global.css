@@ -267,6 +267,16 @@ hr {
 	color: var(--navy);
 	text-decoration: underline;
 }
+.prose .comparison-link {
+	color: var(--navy);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.prose .comparison-link:hover {
+	color: var(--blue);
+	text-decoration: underline;
+}
 @media (max-width: 720px) {
 	body {
 		font-size: 17px;

@@ -143,7 +143,7 @@ Skip it if you:
 
 ## ASUS ROG Swift OLED PG32UCDM Gen 3 — Best for Gaming
 
-<a href="https://link.amazon/B08b8YtDy" class="article-action affiliate-link" target="_blank" rel="sponsored noopener">Check price on Amazon</a> | <a href="/comparisons/best-gaming-monitors-2026/" class="article-action">Compare Other Gaming Monitors</a> | <a href="#quick-picks" class="article-action">Back to Quick Picks</a>
+<a href="https://link.amazon/B08b8YtDy" class="article-action affiliate-link" target="_blank" rel="sponsored noopener">Check price on Amazon</a> | <a href="/comparisons/best-gaming-monitors-2026/" class="article-action" target="_blank">Compare Other Gaming Monitors</a> | <a href="#quick-picks" class="article-action">Back to Quick Picks</a>
 
 The **ASUS ROG Swift OLED PG32UCDM Gen 3** is the premium gaming recommendation in this list.
 

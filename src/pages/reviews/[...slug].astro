@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 	return reviews.map((review) => ({
 		params: {
-			slug: review.id,
+			slug: review.data.slug,
 		},
 		props: review,
 	}));

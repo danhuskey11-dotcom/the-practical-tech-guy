@@ -2,6 +2,7 @@
 title: "5 Best Wireless Mice in 2026"
 description: "Five practical wireless mouse recommendations for productivity, ergonomic comfort, multi-device setups, travel, and everyday computer use."
 pubDate: 2026-11-16
+slug: "best-wireless-mice-2026"
 
 contentType: review
 category: hardware

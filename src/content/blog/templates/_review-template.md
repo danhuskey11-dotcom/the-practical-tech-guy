@@ -2,6 +2,7 @@
 title: "Product or Service Review"
 description: "A practical review explaining what this product does, who it is for, its strengths, weaknesses, and whether it is worth the money."
 pubDate: 2026-11-10
+slug: "_review-template"
 
 contentType: review
 category: software

@@ -69,7 +69,7 @@ const posts = (await getCollection('blog'))
 					<ul class="guide-list">
 						{posts.map((post) => (
 							<li>
-								<a href={`/guides/${post.id}/`}>
+								<a href={`/guides/${post.data.slug}/`}>
 									<h2>{post.data.title}</h2>
 
 									<p>{post.data.description}</p>

@@ -2,6 +2,7 @@
 title: "5 Best Webcams in 2026"
 description: "Five practical webcam recommendations for video meetings, working from home, streaming, content creation, and budget-conscious buyers."
 pubDate: 2026-11-17
+slug: "best-webcams-2026"
 
 contentType: review
 category: hardware

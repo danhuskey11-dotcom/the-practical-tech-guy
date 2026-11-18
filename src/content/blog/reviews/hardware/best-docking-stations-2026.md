@@ -2,6 +2,7 @@
 title: "5 Best USB-C Hubs and Docking Stations in 2026"
 description: "Five practical USB-C hub and docking station recommendations for home offices, multi-monitor setups, business laptops, Thunderbolt workstations, and travel."
 pubDate: 2026-11-16
+slug: "best-usb-c-hubs-and-docking-stations-2026"
 
 contentType: review
 category: hardware

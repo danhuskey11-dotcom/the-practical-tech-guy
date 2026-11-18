@@ -88,7 +88,7 @@ const reviews = (await getCollection('blog'))
 								</p>
 
 								<h3>
-									<a href={`/reviews/${review.id}/`}>
+									<a href={`/reviews/${review.data.slug}/`}>
 										{review.data.title}
 									</a>
 								</h3>
@@ -106,7 +106,7 @@ const reviews = (await getCollection('blog'))
 
 									<a
 										class="read-review"
-										href={`/reviews/${review.id}/`}
+										href={`/reviews/${review.data.slug}/`}
 									>
 										Read Review →
 									</a>

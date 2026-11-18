@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 	return comparisons.map((comparison) => ({
 		params: {
-			slug: comparison.id,
+			slug: comparison.data.slug,
 		},
 		props: comparison,
 	}));

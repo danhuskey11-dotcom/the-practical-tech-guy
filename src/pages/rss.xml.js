@@ -14,14 +14,14 @@ export async function GET(context) {
 	const getPostLink = (post) => {
 		switch (post.data.contentType) {
 			case 'review':
-				return `/reviews/${post.id}/`;
+				return `/reviews/${post.data.slug}/`;
 
 			case 'comparison':
-				return `/comparisons/${post.id}/`;
+				return `/comparisons/${post.data.slug}/`;
 
 			case 'guide':
 			default:
-				return `/guides/${post.id}/`;
+				return `/guides/${post.data.slug}/`;
 		}
 	};
 

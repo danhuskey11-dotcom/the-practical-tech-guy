@@ -165,7 +165,7 @@ const organizationSchema = {
 					</p>
 
 					<h3>
-						<a href={`/reviews/${review.id}/`}>
+						<a href={`/reviews/${review.data.slug}/`}>
 							{review.data.title}
 						</a>
 					</h3>
@@ -181,7 +181,7 @@ const organizationSchema = {
 							/>
 						</span>
 
-						<a href={`/reviews/${review.id}/`}>
+						<a href={`/reviews/${review.data.slug}/`}>
 							Read Review →
 						</a>
 					</div>
@@ -242,7 +242,7 @@ const organizationSchema = {
 
 					<h3>
 						<a
-							href={`/comparisons/${comparison.id}/`}
+							href={`/comparisons/${comparison.data.slug}/`}
 						>
 							{comparison.data.title}
 						</a>
@@ -280,7 +280,7 @@ const organizationSchema = {
 						</span>
 
 						<a
-							href={`/comparisons/${comparison.id}/`}
+							href={`/comparisons/${comparison.data.slug}/`}
 						>
 							Read Comparison →
 						</a>
@@ -335,7 +335,7 @@ const organizationSchema = {
 					</p>
 
 					<h3>
-						<a href={`/guides/${post.id}/`}>
+						<a href={`/guides/${post.data.slug}/`}>
 							{post.data.title}
 						</a>
 					</h3>
@@ -349,7 +349,7 @@ const organizationSchema = {
 							<FormattedDate date={post.data.pubDate} />
 						</span>
 
-						<a href={`/guides/${post.id}/`}>
+						<a href={`/guides/${post.data.slug}/`}>
 							Read Guide →
 						</a>
 					</div>

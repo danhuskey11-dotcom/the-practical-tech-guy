@@ -264,7 +264,7 @@ const posts = (await getCollection('blog'))
 					</p>
 
 					<h3>
-						<a href={`/guides/${post.id}/`}>
+						<a href={`/guides/${post.data.slug}/`}>
 							{post.data.title}
 						</a>
 					</h3>
@@ -278,7 +278,7 @@ const posts = (await getCollection('blog'))
 							<FormattedDate date={post.data.pubDate} />
 						</span>
 
-						<a class="read-guide" href={`/guides/${post.id}/`}>
+						<a class="read-guide" href={`/guides/${post.data.slug}/`}>
 							Read Guide →
 						</a>
 					</div>

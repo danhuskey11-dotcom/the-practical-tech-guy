@@ -2,6 +2,7 @@
 title: "Article Title"
 description: "A concise description of what this article helps the reader accomplish."
 pubDate: 2026-11-09
+slug: "_article-template"
 
 contentType: guide
 category: windows

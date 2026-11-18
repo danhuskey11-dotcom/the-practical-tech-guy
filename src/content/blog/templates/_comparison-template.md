@@ -2,6 +2,7 @@
 title: "Product A vs. Product B: Which Is Better?"
 description: "A practical side-by-side comparison of Product A and Product B, including features, pricing, strengths, weaknesses, and which option is better for different users."
 pubDate: 2026-11-10
+slug: "_comparison-template"
 
 contentType: comparison
 category: software
